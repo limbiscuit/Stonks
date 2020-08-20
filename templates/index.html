@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <h1>Investment Portfolio</h1><br>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for holding in holdings %}
+                <tr>
+                    <td>{{ holding["symbol"] }}</td>
+                    <td>{{ holding["name"] }}</td>
+                    <td>{{ holding["SUM(shares)"] }}</td>
+                    <td>{{ holding["price"] }}</td>
+                    <td>{{ holding["total"] }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>Available Cash</td><td colspan="3"></td><td>{{ cash }}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4"></td><th>{{ grandTotal }}</th>
+            </tr>
+        </tfoot>
+    </table>
+
+{% endblock %}

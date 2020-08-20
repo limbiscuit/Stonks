@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <form action="/quote" method="post">
+        <div class="form-group">
+            <input autofocus class="form-control" name="stock" id="stock" placeholder="Symbol" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit" id="submit" disabled>Quote</button>
+    </form>
+
+    <script>
+        document.querySelector("#stock").onkeyup = function () {
+            if (document.querySelector("#stock").value === "") {
+                document.querySelector("#submit").disabled = true;
+            }
+
+            else {
+                document.querySelector("#submit").disabled = false;
+            }
+        }
+    </script>
+{% endblock %}
