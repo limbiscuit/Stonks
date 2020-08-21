@@ -33,6 +33,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
+
 db = SQL("sqlite:///finance.db")
 
 # Make sure API key is set
@@ -138,8 +139,17 @@ def buy():
 @login_required
 def history():
     """Show history of transactions"""
-    return apology("TODO")
+        # Query transactions table and sum number of shares for each stock
+    holdings = db.execute("SELECT symbol, shares, price, time   \
+                           FROM transactions                    \
+                           WHERE user_id=?",
+                           session["user_id"])
 
+    # Update price to correct USD formatting
+    for holding in holdings:
+        holding["price"] = usd(holding["price"])
+
+    return render_template("history.html", holdings=holdings)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -316,11 +326,12 @@ def sell():
 def deposit():
     if request.method == "POST":
         deposit = request.form.get("deposit")
+        deposit = deposit.replace('$','').replace(',','')
+        db.execute("UPDATE users SET cash=cash + :deposit WHERE id=:user", deposit=deposit, user=session["user_id"])
 
-        if not deposit or int(deposit) < 0:
-            return apology("must enter valid deposit amount", 403)
+        flash('Your deposit was successful!')
+        return render_template("deposit.html")
 
-        return apology("to do", 403)
     else:
         return render_template("deposit.html")
 

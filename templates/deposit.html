@@ -5,11 +5,29 @@
 {% endblock %}
 
 {% block main %}
+
     <form action="/deposit" method="post">
         <div class="form-group">
-            $ <input autofocus class="form-control" name="deposit" type="number" placeholder="0.00" min="0.01" step="0.01">
+            <input autofocus class="form-control" name="deposit" id="deposit" type="text" placeholder="Amount">
         </div>
         <button class="btn btn-primary" type="submit" id="submit">Deposit</button>
     </form>
 
+    <script>
+        const formatter = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 2
+        })
+
+        let input = document.getElementById("deposit");
+
+        deposit.addEventListener("change", function() {
+            let position = this.selectionStart
+            let deposit = input.value.replace(/[^0-9.]|\.(?=.*\.)/g, "");
+            input.value = formatter.format(deposit);
+            this.selectionEnd = position;
+        });
+
+    </script>
 {% endblock %}
